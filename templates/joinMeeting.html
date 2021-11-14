@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Join Meeting</title>
+</head>
+<link rel="stylesheet" href="{% static "/css/style.css" %}">
+<body>
+ <div class="card" id="card" style="height: 80%">
+      <h1>Join Group Chat</h1>
+  <h3>Enter your Meeting Id and Name below</h3>
+      <br />
+        <form action="/join/stand" method="post" >
+            {% csrf_token %}
+      <div class="single-line">
+        <p class="legend-heading" for="name">Meeting Id</p>
+        <input type="text" name="id" value="{{ meetingid }}" id="name" placeholder="Meeting Id" />
+      </div>
+      <div class="single-line">
+        <p class="legend-heading" for="password">Name</p>
+        <input
+          type="text"
+          name="name"
+          id="password"
+          value="{{ name }}"
+          placeholder="Name"
+        />
+          <input type="hidden" value="{{ tk }}" name="tk" >
+      </div>
+      <input
+        type="submit"
+        value="Join"
+        class="submit"
+      />
+            </form>
+            {% ifnotequal msg "" %}
+        <div>
+                <h4 style="color:red">{{ msg }}</h4>
+        </div>
+            {% endifnotequal %}
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Meeting List</title>
+</head>
+<body>
+<center>
+    <table width="600px" border="1">
+        <caption>Meeting List</caption>
+        <tr>
+            <td>
+                Meeting Id
+            </td>
+            <td>
+                Topic
+            </td>
+            <td>
+                Meeting Start
+            </td>
+        </tr>
+        {% for meeting in meetings %}
+            <tr>
+            <td>
+               <a href="/roomdetails/?id={{ meeting.id }}"> {{ meeting.id }}</a>
+            </td>
+            <td>
+                {{ meeting.name }}
+            </td>
+            <td>
+                {{ meeting.date_start }}
+            </td>
+            <td>
+                <a href="/deletemeeting/?id={{ meeting.id }}">Delete</a>
+            </td>
+            </tr>
+        {% endfor %}
+    </table>
+</center>
+</body>
+</html>

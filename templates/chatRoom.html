@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Chat Area</title>
+</head>
+<body>
+    <div style="display: flex">
+        <input type="text" id="data">
+        <button onclick="handleClick()">send</button>
+    </div>
+<div style="display: flex;flex-direction: column;" id="msg">
+
+</div>
+</body>
+<script>
+    let socket=new WebSocket("ws://localhost:8000/ws/chatroom/")
+      socket.onopen=()=>socket.send(JSON.stringify({"action":"entry",mid:{{mid}},id:{{id}}}))
+    window.onclose=()=>{
+        socket.send(JSON.stringify({"action":"disconnect","id":{{id}},"mid":{{mid}}}))
+    }
+    socket.onmessage=function(event){
+        let data=JSON.parse(event.data)
+        console.log(data)
+        let rec=data['entry']
+        if(rec) {
+            setTimeout(()=>{
+
+            data=rec
+            let st = confirm(`${data['name']} waiting in room are you accept his request`)
+                console.log(st)
+                console.log(`${data['name']} waiting in room are you except his request`)
+            socket.send(JSON.stringify({"action": "accept_request", "mid":{{mid}}, "id": data['id'],"status":st}))
+            },3000)
+        }
+        else{
+            let p=document.createElement("p")
+            p.innerHTML=`<p>${data['msg']} Send By ${name}</p>`
+            p.style.alignItems="left"
+            document.getElementById("msg").appendChild(p)
+        }
+    }
+    function handleClick(e){
+        msg=document.getElementById("data").value
+        if(msg!==""){
+            socket.send(JSON.stringify({"action":"send_msg","msg":msg,"id":{{id}},"mid":{{mid}}}))
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Chat-Create Meeting</title>
+    <link rel="stylesheet" href={% static "/css/style.css" %}>
+  </head>
+  <body>
+<div class="card"  >
+      <div class="shine"></div>
+      <h1>Create Meeting</h1>
+      <br />
+         <form action="/create/createmeeting" method="post" >
+            {% csrf_token %}
+      <div class="single-line">
+        <p class="legend-heading" for="name">Topic</p>
+        <input type="text" name="name" id="name" />
+      </div>
+      <div class="single-line">
+        <p class="legend-heading" for="emailId">Meeting Start</p>
+        <input type="datetime-local" name="start" id="emailId" />
+      </div>
+
+      <div class="single-line">
+        <p class="legend-heading" for="username">Meeting End</p>
+        <input type="datetime-local" name="end" id="username" />
+      </div>
+
+      <div class="single-line">
+        <p class="legend-heading" for="password">Password Status</p>
+        <input type="checkbox" value="true" name="passwordstatus" id="password" />
+      </div>
+
+      <input type="submit" value="Create Meeting"  class="submit" />
+         </form>
+    </div>
+</body>
+</html>

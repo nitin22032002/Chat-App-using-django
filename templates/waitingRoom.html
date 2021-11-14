@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Waiting Room</title>
+</head>
+<body>
+<div style="display: flex;justify-content: center;align-content: center">
+    <div style="display: flex;flex-direction: column">
+        <h2>Wait until Host not accept your request</h2>
+        <h3>{{ mid }}</h3>
+        <h3>{{ mname }}</h3>
+        <h3>{{ id }}</h3>
+        <h3>{{ name }}</h3>
+        <h3>Loading........</h3>
+        <a href="/cancel" style="color: red">CANCEL</a>
+    </div>
+</div>
+</body>
+<script>
+    let socket=new WebSocket("ws://localhost:8000/ws/waitingroom/")
+    socket.onopen=()=>socket.send(JSON.stringify({mid:{{mid}},id:{{id}}}))
+    socket.onmessage=function(event){
+        status=JSON.parse(event.data)['request_status']
+        if(status==="true"){
+            location.href="/meetingarea/?id={{ mid }}"
+        }
+        else{
+            alert("Host Not accept Your Request")
+           /* setTimeout(()=>{
+                location.href="/joinmeeting/"
+            },2000)*/
+        }
+    }
+</script>
+</html>

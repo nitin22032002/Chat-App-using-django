@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Chat-Meeting Details</title>
+    <link rel="stylesheet" href={% static "/css/style.css" %}>
+  </head>
+  <body>
+<div class="card" style="height: 97%;overflow: auto;"  >
+      <div class="shine"></div>
+      <h1>Meeting Details</h1>
+      <br />
+    <div class="single-line">
+        <p class="legend-heading" for="name">Meeting Id</p>
+        <input type="text" name="name" readonly value="{{ room.id }}" id="name" />
+      </div>
+    <div class="single-line">
+        <p class="legend-heading" for="name">Topic</p>
+        <input type="text" name="name" id="name" value="{{ room.name }}" readonly />
+      </div>
+      <div class="single-line">
+        <p class="legend-heading" for="emailId">Meeting Start</p>
+        <input type="text" name="start" id="emailId" readonly value="{{ room.date_start}}" />
+      </div>
+
+      <div class="single-line">
+        <p class="legend-heading" for="username">Meeting End</p>
+        <input type="text" name="end" id="username" readonly value="{{ room.date_end }}" />
+      </div>
+    {% if room.meeting_password_status %}
+      <div class="single-line">
+        <p class="legend-heading" for="password">Meeting Password</p>
+        <input type="text" value="{{ room.meeting_password }}" name="password" id="password" />
+      </div>
+
+    {% endif %}
+     <div class="single-line">
+        <p class="legend-heading" for="password">Meeting Link</p>
+        <a href="/joinmeeting/?tk={{ token }}">http://localhost:8000/joinmeeting/?tk={{ token }}</a>
+      </div>
+<br>
+     <div class="single-line">
+        <p class="legend-heading" for="password">Meeting QR Download</p>
+        <a href="/static/images/qrroom.png" download=""><img src="/static/images/qrroom.png"></a>
+      </div>
+      <input type="button" onclick="location.href='/'" value="Back To Home"  class="submit" />
+    </div>
+</body>
+</html>
