@@ -5,7 +5,7 @@ import qrcode
 import json
 from DiscusionForum.views import sendOtp
 from django.http import JsonResponse
-from .models import Users,Room,Person
+from .models import Users,Room,Person,Message
 from DiscusionForum.settings import BASE_DIR
 from datetime import datetime
 secretkey="itissecretesrtig"
@@ -55,8 +55,15 @@ def validate(request):
 def meetingArea(request):
     try:
         mid=request.GET['id']
+        end_time=Room.objects.get(id=mid).date_end
+        current=datetime.now().replace(second=0,microsecond=0)
+        diff=(end_time.date()-current.date()).total_seconds()
+        diff+=abs((end_time.time().hour-current.time().hour)*60*60)
+        diff+=abs((end_time.time().minute-current.time().minute)*60)
         id=request.session['meetinguser']['id']
-        return render(request,"chatRoom.html",{"mid":mid,"id":id})
+        name=request.session['meetinguser']['name']
+        host_id=MEETINGS[mid]["host"]['key'].id
+        return render(request,"chatRoom.html",{"mid":mid,"id":id,"host_id":host_id,"name":name,"diff":diff})
     except Exception as e:
         print(e)
         return redirect("/joinmeeting")
@@ -68,20 +75,23 @@ def joinPerson(request):
         tk=data['tk']
         session=request.session
         meeting=getMeeting(id)
+        current = datetime.now().replace(second=0, microsecond=0)
         msg=""
-        if (len(meeting)>0 and session.get("user", False)):
+        if (len(meeting)>0 and session.get("user", False) and ((meeting[3].date()<current.date()) or (meeting[3].date()==current.date() and meeting[3].time()<=current.time())) and ((meeting[4].date()>current.date()) or (meeting[4].date()==current.date() and meeting[4].time()>current.time()))):
             if(session['user']['data']['id']==meeting[0]):
                 addper=addPersonInMeeting(session['user']['data']['name'])
                 MEETINGS[id]={"host":{'key':addper,"object":None},"participants":{}}
+                MEETINGS[id]["participants"][addper.id] = {"key": addper, "object": None}
                 request.session['meetinguser']={"status":"host","name":addper.name,"id":addper.id,"mid":id}
-                return redirect(f"/meetingarea/?id={id}")
+                return redirect(f"/waitingroom/?id={id}")
         else:
             pass
+
         if(len(meeting)==0):
             msg="Invalid Meeting Details"
-        elif(meeting[4]<datetime.now().astimezone()):
+        elif((meeting[4].date()<current.date()) or (meeting[4].date()==current.date() and meeting[4].time()<=current.time())):
             msg="Meeting Expire"
-        elif(meeting[3]>datetime.now().astimezone() or id not in MEETINGS ):
+        elif(((meeting[3].date()>current.date()) or (meeting[3].date()==current.date() and meeting[3].time()>current.time())) or id not in MEETINGS ):
             msg="Meeting not start yet"
         if(msg!=""):
             return render(request,"joinMeeting.html",{"meetingid":id,"name":name,"tk":tk,"msg":msg})
@@ -94,7 +104,7 @@ def joinPerson(request):
                         MEETINGS[id]["participants"][addper.id]={"key": addper, "object": None}
                         request.session['meetinguser'] = {"status": "user", "name": addper.name, "id": addper.id,
                                                           "mid": id}
-                        MEETINGS[id]['host']['object'].send(json.dumps({"entry":{"name":name,"id":addper.id}}))
+                        MEETINGS[id]['host']['object'].send(json.dumps({"action":"entry","data":{"name":name,"id":addper.id}}))
                         return redirect(f"/waitingroom/?id={id}")
                     else:
                         return redirect("/joinmeeting")
@@ -107,7 +117,7 @@ def joinPerson(request):
             addper = addPersonInMeeting(name)
             MEETINGS[id]["participants"][addper.id]={"key": addper, "object": None}
             request.session['meetinguser'] = {"status": "user", "name": addper.name, "id": addper.id, "mid": id}
-            MEETINGS[id]['host']['object'].send(json.dumps({"entry": {"name": name, "id": addper.id}}))
+            MEETINGS[id]['host']['object'].send(json.dumps({"action":"entry","data": {"name": name, "id": addper.id}}))
             return redirect(f"/waitingroom/?id={id}")
     except Exception as e:
         print(e)
@@ -202,13 +212,51 @@ def joinMeeting(request):
     except Exception as e:
         print(e)
         return  redirect("/")
+def leave(request):
+    global MEETINGS
+    try:
+        if (request.session.get("meetinguser", False)):
+            data = request.session['meetinguser']
+            id = data['id']
+            mid = data['mid']
+            status = data['status']
+            if(request.session.get("visit",False)):
+                del request.session['visit']
+
+            if (status == "host"):
+                for item in MEETINGS[mid]["participants"].values():
+                    if (item['key'].id == id): continue
+                    item['object'].send(json.dumps({"action": "host_left"}))
+                obj = MEETINGS[mid]['participants'][id]['key']
+                obj.delete()
+                messages=Message.objects.filter(room_id=mid).all()
+                for item in messages:
+                    item.delete()
+                del MEETINGS[mid]["host"]
+            else:
+                for item in MEETINGS[mid]["participants"].values():
+                    if (item['key'].id == id): continue
+                    item['object'].send(json.dumps({"action": "user_left","name":MEETINGS[mid]["participants"][id]['key'].name,"id":id}))
+                obj = MEETINGS[mid]['participants'][id]['key']
+                obj.delete()
+            del MEETINGS[mid]['participants'][id]
+            del request.session['meetinguser']
+            return redirect("/joinmeeting")
+        else:
+            return redirect("/joinmeeting")
+    except Exception as e:
+        print(e)
+        return redirect("/joinmeeting")
 def cancel(request):
+    global MEETINGS
     try:
         if(request.session.get("meetinguser",False)):
             data=request.session['meetinguser']
             id=data['id']
             mid=data['mid']
-            obj=Person.objects.get(id=id)
+            del request.session['visit']
+            MEETINGS[mid]["host"]["object"].send(json.dumps({"action":"cancel_request","id":id}))
+            obj=MEETINGS[mid]['participants'][id]['key']
             obj.delete()
             del MEETINGS[mid]['participants'][id]
             del request.session['meetinguser']
@@ -220,19 +268,22 @@ def cancel(request):
         return redirect("/joinmeeting")
 def waitingRoom(request):
     try:
-        if(request.session.get("meetinguser",False)):
+        if(request.session.get("meetinguser",False) and not request.session.get("visit",False)):
             data=request.session['meetinguser']
+            request.session['visit']=True
             name=data['name']
+            status=data['status']
             id=data['id']
             mid=data['mid']
             meeting=getMeeting(mid)
             if(len(meeting)>0):
                 mname=meeting[5]
-                return render(request,"waitingRoom.html",{"name":name,"mname":mname,"id":id,"mid":mid})
+                return render(request,"waitingRoom.html",{"status":status,"name":name,"mname":mname,"id":id,"mid":mid})
             else:
                 return redirect("/joinmeeting")
 
         else:
+            cancel(request)
             return redirect("/joinmeeting")
     except Exception as e:
         print(e)

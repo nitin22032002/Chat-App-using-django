@@ -18,19 +18,46 @@
 </div>
 </body>
 <script>
-    let socket=new WebSocket("ws://localhost:8000/ws/waitingroom/")
-    socket.onopen=()=>socket.send(JSON.stringify({mid:{{mid}},id:{{id}}}))
-    socket.onmessage=function(event){
-        status=JSON.parse(event.data)['request_status']
-        if(status==="true"){
-            location.href="/meetingarea/?id={{ mid }}"
-        }
-        else{
-            alert("Host Not accept Your Request")
-           /* setTimeout(()=>{
-                location.href="/joinmeeting/"
-            },2000)*/
-        }
-    }
+   let clientStatus="{{ status }}"
+    if(clientStatus==="host"){
+       window.open("/meetingarea/?id={{ mid }}","",'fullscreen=yes,titlebar=no,toolbar=no,statusbar=no')
+        location.href = "/joinmeeting/"
+   }
+   else
+   {
+       let socket = new WebSocket(`ws://${location.host}/ws/waitingroom/`)
+       socket.onopen = () => socket.send(JSON.stringify({mid: {{mid}}, id: {{id}}}))
+       {#window.onunload=(e) => {#}
+       {#    location.href="/cancel/"#}
+
+       socket.onmessage = function (event) {
+           let response=JSON.parse(event.data)
+           let action=response['action']
+           if(action==="request"){
+           let status = response['request_status']
+           if (status) {
+               window.open("/meetingarea/?id={{ mid }}", "1300", "700")
+               location.href = "/joinmeeting/"
+           } else {
+               alert("Host Not accept Your Request")
+               setTimeout(()=>{
+               location.href = "/cancel/"
+               },3000)
+           }}
+           else if(action==="host_left"){
+               alert("Host End The Meeting")
+               setTimeout(()=>{
+
+               location.href="/cancel/"
+               },3000)
+           }
+       }
+      /* socket.on=()=>{
+
+           if(status!=="true"){
+               location.href="/cancel/"
+           }
+       }*/
+   }
 </script>
 </html>

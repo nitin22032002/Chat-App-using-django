@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <title>Group Chat-Chat Area</title>
+    <link rel="stylesheet" href="/static/css/chatRoom.css">
 </head>
 <body>
-    <div style="display: flex">
-        <input type="text" id="data">
-        <button onclick="handleClick()">send</button>
+    <div class="main">
+        <div class="notification">
+            <div class="count-area">
+ <button class="send-btn-btn" id="leave-meeting" style="background-color: red">leave</button>
+            </div>
+                <div class="notification-area">
+
+                </div>
+            <div class="count-area">
+ Notifications(<span id="notify_count">0</span>)
+            </div>
+        </div>
+        <div class="chat-area">
+            <div class="message">
+
+            </div>
+            <div class="send-portion">
+                <div class="text-area">
+                    <input type="text" id="msg" class="text-input" placeholder="Message From {{ name|upper }}">
+                </div>
+                <div class="send-btn">
+                    <button class="send-btn-btn" id="send-btn">send</button>
+                </div>
+            </div>
+        </div>
+        <div class="members-list">
+  <div class="members-list-area">
+                </div>
+            <div class="members-list-count-area">
+                   Members(<span id="member_count">1</span>)
+            </div>
+        </div>
     </div>
-<div style="display: flex;flex-direction: column;" id="msg">
-
-</div>
 </body>
-<script>
-    let socket=new WebSocket("ws://localhost:8000/ws/chatroom/")
-      socket.onopen=()=>socket.send(JSON.stringify({"action":"entry",mid:{{mid}},id:{{id}}}))
-    window.onclose=()=>{
-        socket.send(JSON.stringify({"action":"disconnect","id":{{id}},"mid":{{mid}}}))
-    }
-    socket.onmessage=function(event){
-        let data=JSON.parse(event.data)
-        console.log(data)
-        let rec=data['entry']
-        if(rec) {
-            setTimeout(()=>{
+{{ mid|json_script:"mid" }}
+{{ host_id|json_script:"pid" }}
+{{ id|json_script:"id" }}
+{{ diff|json_script:"diff" }}
 
-            data=rec
-            let st = confirm(`${data['name']} waiting in room are you accept his request`)
-                console.log(st)
-                console.log(`${data['name']} waiting in room are you except his request`)
-            socket.send(JSON.stringify({"action": "accept_request", "mid":{{mid}}, "id": data['id'],"status":st}))
-            },3000)
-        }
-        else{
-            let p=document.createElement("p")
-            p.innerHTML=`<p>${data['msg']} Send By ${name}</p>`
-            p.style.alignItems="left"
-            document.getElementById("msg").appendChild(p)
-        }
-    }
-    function handleClick(e){
-        msg=document.getElementById("data").value
-        if(msg!==""){
-            socket.send(JSON.stringify({"action":"send_msg","msg":msg,"id":{{id}},"mid":{{mid}}}))
-        }
-    }
+<script src="/static/js/chatRoom.js" >
 </script>
 </html>

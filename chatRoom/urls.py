@@ -20,5 +20,6 @@ urlpatterns=[
     path("join/stand",views.joinPerson,name="join"),
     path("validate",views.validate,name="validate"),
     path("cancel/",views.cancel,name="Cancel Meeting"),
+    path("leave/",views.leave,name="Leave Meeting"),
     path("meetingarea/",views.meetingArea,name="Meeting Area"),
 ]
