@@ -14,9 +14,8 @@ function handleServerMessage(event){
         }
         else if(action==="host_left"){
             alert("Meeting End By Host")
-            setTimeout(()=>{
             location.href="/leave/"
-            },3000)
+            
         }
         else if(action==="block"){
             addUserNotification(`You Blocked By Host At ${new Date().toUTCString()} Now You can't communicate with others you message send to host only not other's`)
@@ -161,19 +160,19 @@ function actionRemove(id){
     socket.send(JSON.stringify({"action":"remove","id":id,"host_id":pid,"mid":mid}))
 }
 function addUser(name,id){
-
+    let obj=document.getElementById(`${id}`)
+    if(obj===null || obj===undefined){
     let notify=`<div style="font-size:20px;width:96%;padding: 5px;">${name} id ${id}</div>
-${pid===parseInt(window.id.innerText) && pid!==id?`<div style="display: flex"><button class="btn" id="btn${id}" task="block" onclick="actionBlock(${id})">Block</button><button class="btn" task="remove" onclick="actionRemove(${id})">Remove</button></div>`:""}`
+${pid===parseInt(window.id.innerText) && pid!==id?`
+<div style="display: flex"><button class="btn" id="btn${id}" task="block" onclick="actionBlock(${id})">Block</button><button class="btn" task="remove" onclick="actionRemove(${id})">Remove</button></div>`:""}`
     let div=document.createElement("div")
+    div.className="member"
     div.innerHTML=notify
-    div.style.backgroundColor="#e84118"
-    div.style.border="1px solid black"
-    div.style.borderRadius="15px"
-    div.style.marginTop="10px"
     div.id=`${id}`
     members_list_area.appendChild(div)
     updateUser()
     addUserNotification(`${name} Join Meeting At ${new Date().toUTCString()} id (${id})`)
+    }
 }
 
 
@@ -185,7 +184,9 @@ window.addEventListener("keyup",(e)=>{
     }
 })
 document.getElementById("leave-meeting").addEventListener("click",()=> {
+    // history.deleteAll()
     location.href = "/leave/"
+
 })
 let notification_area=document.getElementsByClassName("notification-area")[0]
 let message_area=document.getElementsByClassName("message")[0]

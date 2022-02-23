@@ -2,49 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Group Chat-Chat Area</title>
-    <link rel="stylesheet" href="/static/css/chatRoom.css">
+    <link rel="stylesheet" href="http://localhost:8000/static/css/chatRoom1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="main">
-        <div class="notification">
-            <div class="count-area">
- <button class="send-btn-btn" id="leave-meeting" style="background-color: red">leave</button>
+        <div class="leave-icon" id="leave-meeting">
+            <i class="fa-solid fa-xmark p-icon"></i>
+        </div>
+        <div class="main-body">
+            <div class="notification-area members-list" id="notification-list">
+        </div>
+        <div class="members-list" id="member-list">
+            <div class="search-box">
+                <input type="text" id="search" class="search-input">
+                <i class="fa-solid fa-magnifying-glass s-icon"></i>
             </div>
-                <div class="notification-area">
-
-                </div>
-            <div class="count-area">
- Notifications(<span id="notify_count">0</span>)
+            <div class="members-list-area">
             </div>
         </div>
         <div class="chat-area">
+            <div class="user-header">
+                <div class="user-detail">
+
+                    <div class="user-name-letter">
+                        {{name.0}}
+                    </div>
+                    <div class="user-member-detail">
+                        {{name}} ({{id}})
+                        <div class="count-member">
+                            <span id="member_count">1</span> Member Active
+                        </div>
+                    </div>
+                </div>
+                <div class="user-action-btn">
+                    <div class="member-count notification-count">
+                        <i class="fa-solid fa-user"></i>
+                        <span id="member_count_other" class="user-member-count">
+                            99
+                          </span>
+                    </div>
+                    <div class="notification-count">
+                        <i class="fa-solid fa-comment"></i>
+                        <span id="notify_count" class="notify-count">
+                            99
+                          </span>
+                    </div>
+                </div>
+            </div>
             <div class="message">
 
             </div>
             <div class="send-portion">
                 <div class="text-area">
-                    <input type="text" id="msg" class="text-input" placeholder="Message From {{ name|upper }}">
+                    <input type="text" id="msg" class="text-input" placeholder="Write Message Here..">
                 </div>
-                <div class="send-btn">
-                    <button class="send-btn-btn" id="send-btn">send</button>
+                <div class="send-btn" id="send-btn">
+                    Send <i class="fa-solid fa-paper-plane"></i>
                 </div>
-            </div>
-        </div>
-        <div class="members-list">
-  <div class="members-list-area">
-                </div>
-            <div class="members-list-count-area">
-                   Members(<span id="member_count">1</span>)
             </div>
         </div>
     </div>
+
+</div>
 </body>
 {{ mid|json_script:"mid" }}
-{{ host_id|json_script:"pid" }}
 {{ id|json_script:"id" }}
+{{ host_id|json_script:"pid" }}
 {{ diff|json_script:"diff" }}
-
-<script src="/static/js/chatRoom.js" >
-</script>
+<script src="/static/js/chatRoom1.js" ></script>
 </html>
+
+
+

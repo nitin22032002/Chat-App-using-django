@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from .models import Users,Room,Person,Message
 from DiscusionForum.settings import BASE_DIR
 from datetime import datetime
+datetime.now().replace()
 secretkey="itissecretesrtig"
 MEETINGS={}
 def uniqueid():
@@ -67,6 +68,36 @@ def meetingArea(request):
     except Exception as e:
         print(e)
         return redirect("/joinmeeting")
+
+def updateMeeting(request,id=None):
+    try:
+        obj=Room.objects.get(id=id)
+        if(obj):
+            obj.date_start=str(obj.date_start)[:-9]
+            obj.date_end=str(obj.date_end)[:-9]
+            return render(request,"updateMeeting.html",{"data":obj})
+        return redirect("/meetinglist")
+    except:
+        return redirect("/")
+
+def updateMeetingContent(request):
+    try:
+        data=request.POST
+        id=data['meetingid']
+        topic=data['name']
+        start=data['start']
+        end=data['end']
+        room=Room.objects.get(id=id)
+        if(room):
+            room.date_end=end
+            room.name=topic
+            room.date_start=start
+            room.save()
+        return redirect("/meetinglist")
+    except Exception as e:
+        print(e)
+        return redirect("/meetinglist")
+
 def joinPerson(request):
     try:
         data=request.POST
@@ -91,8 +122,10 @@ def joinPerson(request):
             msg="Invalid Meeting Details"
         elif((meeting[4].date()<current.date()) or (meeting[4].date()==current.date() and meeting[4].time()<=current.time())):
             msg="Meeting Expire"
-        elif(((meeting[3].date()>current.date()) or (meeting[3].date()==current.date() and meeting[3].time()>current.time())) or id not in MEETINGS ):
+        elif(((meeting[3].date()>current.date()) or (meeting[3].date()==current.date() and meeting[3].time()>current.time()))):
             msg="Meeting not start yet"
+        elif(not MEETINGS.get(id,None)):
+            msg="Host Not Start Meeting Yet"
         if(msg!=""):
             return render(request,"joinMeeting.html",{"meetingid":id,"name":name,"tk":tk,"msg":msg})
         if(meeting[2]):

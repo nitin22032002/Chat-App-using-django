@@ -3,61 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Group Chat-Waiting Room</title>
+    <link href="/static/css/waiting.css" rel="stylesheet">
 </head>
-<body>
-<div style="display: flex;justify-content: center;align-content: center">
-    <div style="display: flex;flex-direction: column">
-        <h2>Wait until Host not accept your request</h2>
-        <h3>{{ mid }}</h3>
-        <h3>{{ mname }}</h3>
-        <h3>{{ id }}</h3>
-        <h3>{{ name }}</h3>
-        <h3>Loading........</h3>
-        <a href="/cancel" style="color: red">CANCEL</a>
+<body >
+<div class="main-body">
+    <div class="content">
+        <div>
+            Wait Until Host Not Take You In
+        </div>
+        <div>
+            Topic : {{mname}}
+        </div>
+        <div>
+            Meeting Id : {{mid}}
+        </div>
+        <div >
+            Request Expire After : <span id="timmer"></span> 
+        </div>
+        <div>
+            <button class="cancel-btn" onclick="location.href='/cancel'">Cancel Request</button>
+        </div>
     </div>
 </div>
 </body>
-<script>
-   let clientStatus="{{ status }}"
-    if(clientStatus==="host"){
-       window.open("/meetingarea/?id={{ mid }}","",'fullscreen=yes,titlebar=no,toolbar=no,statusbar=no')
-        location.href = "/joinmeeting/"
-   }
-   else
-   {
-       let socket = new WebSocket(`ws://${location.host}/ws/waitingroom/`)
-       socket.onopen = () => socket.send(JSON.stringify({mid: {{mid}}, id: {{id}}}))
-       {#window.onunload=(e) => {#}
-       {#    location.href="/cancel/"#}
-
-       socket.onmessage = function (event) {
-           let response=JSON.parse(event.data)
-           let action=response['action']
-           if(action==="request"){
-           let status = response['request_status']
-           if (status) {
-               window.open("/meetingarea/?id={{ mid }}", "1300", "700")
-               location.href = "/joinmeeting/"
-           } else {
-               alert("Host Not accept Your Request")
-               setTimeout(()=>{
-               location.href = "/cancel/"
-               },3000)
-           }}
-           else if(action==="host_left"){
-               alert("Host End The Meeting")
-               setTimeout(()=>{
-
-               location.href="/cancel/"
-               },3000)
-           }
-       }
-      /* socket.on=()=>{
-
-           if(status!=="true"){
-               location.href="/cancel/"
-           }
-       }*/
-   }
+{{ mid|json_script:"mid" }}
+{{ id|json_script:"id" }}
+{{ status|json_script:"status" }}
+<script src="/static/js/waiting.js">
+   
 </script>
 </html>

@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="/static/css/allmeetings.css" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <title>Group Chat-Meeting List</title>
 </head>
 <body>
-<center>
-    <table width="600px" border="1">
-        <caption>Meeting List</caption>
+<div class="main-body">
+    <div class="heading">
+        MyRoom's
+    </div>
+    <table   class="table table-striped mytable">
         <tr>
             <td>
                 Meeting Id
@@ -17,6 +21,12 @@
             </td>
             <td>
                 Meeting Start
+            </td>
+            <td>
+                Meeting End
+            </td>
+            <td>
+                Action
             </td>
         </tr>
         {% for meeting in meetings %}
@@ -31,11 +41,15 @@
                 {{ meeting.date_start }}
             </td>
             <td>
+                {{ meeting.date_end }}
+            </td>
+            <td>
                 <a href="/deletemeeting/?id={{ meeting.id }}">Delete</a>
+                <a href="/updatemeeting/{{ meeting.id }}">Update</a>
             </td>
             </tr>
         {% endfor %}
     </table>
-</center>
+</div>
 </body>
 </html>

@@ -153,3 +153,10 @@ input:focus {
   border: var(--accent-color) 3px solid;
   outline: none;
 }
+
+.main-body{
+  display: flex;
+  text-shadow: 6px 6px 6px gray;
+  flex-direction: column;
+  height: 635px;
+}

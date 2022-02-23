@@ -14,7 +14,7 @@ class Person(models.Model):
     block_status = models.BooleanField(default=True)
 
 
-class Room(models.Model):
+class Room(models.Model): 
     host_id = models.IntegerField()
     name = models.CharField(max_length=100,default="group meeting 1")
     meeting_password = models.CharField(max_length=8,default="xxxxx")

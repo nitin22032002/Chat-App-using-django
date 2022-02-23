@@ -3,9 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Group Chat</title>
+    <link href="/static/css/homePage.css" rel="stylesheet" >
 </head>
 <body>
-<a href="/signin">SignIn</a>
-<a href="/joinmeeting">Join Chat</a>
+    <div class="main-body">
+        {%include "header.html"%}
+        <div class="chatting-button">
+            <button class="btn" onclick="location.href='/signin'">
+                Sign In
+            </button>
+            <button class="btn" onclick="location.href='/joinmeeting'">
+                Join Room
+            </button>
+        </div>
+        {%include "footer.html" %}
+    </div>
 </body>
 </html>

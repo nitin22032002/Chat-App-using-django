@@ -1,0 +1,33 @@
+.main-body{
+    display: flex;
+    text-shadow: 6px 6px 6px gray;
+    flex-direction: column;
+    height: 635px;
+}
+
+
+
+.chatting-button{
+    display: flex;
+    flex-direction: column;
+    margin: 30px;
+    height: 70%;
+    
+    justify-content: center;
+    margin-left: 135px;
+}
+
+.btn{
+    background-color: rgba(174, 209, 236, 0.5);
+    width: 30%;
+    height: 15%;
+    font-style: italic;
+    text-shadow: 6px 6px 6px gray;
+    margin: 20px;
+    font-size: 21px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    box-shadow: 6px 6px 6px gray;
+}
+
+
