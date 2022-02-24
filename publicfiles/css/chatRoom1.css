@@ -28,6 +28,8 @@ body{
 
 #notification-list{
     display: none;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .search-box{
