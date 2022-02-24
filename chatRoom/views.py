@@ -46,7 +46,7 @@ def validate(request):
             MEETINGS[id]["participants"][addper.id]={"key": addper, "object": None}
             request.session['meetinguser'] = {"status": "user", "name": addper.name, "id": addper.id,
                                               "mid": id}
-            MEETINGS[id]['host']['object'].send(json.dumps({"entry": {"name": name, "id": addper.id}}))
+            MEETINGS[id]['host']['object'].send(json.dumps({"action":"entry","data": {"name": name, "id": addper.id}}))
             return redirect(f"/waitingroom/?id={id}")
         else:
             return render(request,"passwordCheck.html",{"name":name,"meetingid":id,"msg":"Password Not match"})

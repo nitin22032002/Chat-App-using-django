@@ -202,8 +202,25 @@ location.href = "/leave/"
 
 })
 
+function handleKeyUp(e){
+    let name=search_box.value
+    let members=Array.from(members_list_area.children)
+    for(let i=0;i<members.length;i++){
+        let mem=members[i];
+        let mem_name=Array.from(mem.children)
+        mem_name=(String(mem_name[1].innerText).split("("))[0]
+        mem_name=mem_name.replaceAll("\n","")
+        if(String(mem_name).startsWith(name) || name==""){
+            mem.style.display="flex"
+        }
+        else{
+            mem.style.display="none"
+        }
+    }
+}
 
 
+let search_box=document.querySelector("#search")
 let notification_count=document.getElementsByClassName("notification-count")[1]
 let member_count=document.querySelector(".member-count")
 let member_list=document.querySelector("#member-list")
@@ -216,6 +233,8 @@ let mid=JSON.parse(document.getElementById("mid").textContent)
 let diff=JSON.parse(document.getElementById("diff").textContent)
 let id=JSON.parse(document.getElementById("id").textContent)
 let pid=JSON.parse(document.getElementById("pid").textContent)
+
+search_box.addEventListener("keyup",handleKeyUp)
 
 send_btn.addEventListener("click",sendMessage)
 
