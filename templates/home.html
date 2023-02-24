@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat</title>
+    <link href="/static/css/homePage.css" rel="stylesheet" >
+</head>
+<body>
+    <div class="main-body">
+        {%include "header.html"%}
+        <div class="chatting-button">
+            <button class="btn" onclick="location.href='/signin'">
+                Sign In
+            </button>
+            <button class="btn" onclick="location.href='/joinmeeting'">
+                Join Room
+            </button>
+        </div>
+        {%include "footer.html" %}
+    </div>
+</body>
+</html>

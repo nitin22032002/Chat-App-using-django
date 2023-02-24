@@ -1,0 +1,11 @@
+.footer{
+    font-style: italic;
+    text-align: center;
+    font-size: 20px;
+    float:inline-end
+}
+.main-footer-heading{
+    font-size: 35px;
+    font-weight: 600;
+    margin: 5px;
+}

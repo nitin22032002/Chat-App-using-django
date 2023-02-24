@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Chat Area</title>
+    <link rel="stylesheet" href="/static/css/chatRoom.css">
+</head>
+<body>
+    <div class="main">
+        <div class="notification">
+            <div class="count-area">
+ <button class="send-btn-btn" id="leave-meeting" style="background-color: red">leave</button>
+            </div>
+                <div class="notification-area">
+
+                </div>
+            <div class="count-area">
+ Notifications(<span id="notify_count">0</span>)
+            </div>
+        </div>
+        <div class="chat-area">
+            <div class="message">
+
+            </div>
+            <div class="send-portion">
+                <div class="text-area">
+                    <input type="text" id="msg" class="text-input" placeholder="Message From {{ name|upper }}">
+                </div>
+                <div class="send-btn">
+                    <button class="send-btn-btn" id="send-btn">send</button>
+                </div>
+            </div>
+        </div>
+        <div class="members-list">
+  <div class="members-list-area">
+                </div>
+            <div class="members-list-count-area">
+                   Members(<span id="member_count">1</span>)
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+
+
+
+
+<!-- it is for data and js -->
+{{ mid|json_script:"mid" }}
+{{ id|json_script:"id" }}
+{{ host_id|json_script:"pid" }}
+{{ diff|json_script:"diff" }}
+
+<script src="/static/js/chatRoom.js" >
+</script>
+</html>

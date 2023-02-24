@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Verify User</title>
+</head>
+<link rel="stylesheet" href="{% static "/css/style.css" %}">
+<body>
+ <div class="card" id="card" style="height: 70%">
+      <h1>Join Group Chat</h1>
+  <h3>Enter OTP Below</h3>
+      <br />
+      <div class="single-line">
+        <p class="legend-heading" for="name">OTP</p>
+        <input type="text" name="id"  id="otp" placeholder="OTP" />
+      </div>
+
+      <input
+        type="submit"
+        value="Verify"
+        id="verify"
+        class="submit"
+      /><input
+        type="submit"
+        value="Resend"
+        id="resend"
+        class="submit"
+      />
+
+        <div>
+                <h4 id="alert" style="color:red"></h4>
+        </div>
+    </div>
+
+</body>
+<script src="/static/js/otp.js"></script>
+</html>

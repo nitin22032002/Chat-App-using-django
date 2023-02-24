@@ -1,0 +1,48 @@
+body{
+    height: 640px;
+}
+
+.main-body{
+    background-image: url("/static/images/waiting.jpg" );
+    width: 100%;
+    height: 637px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.content{
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 6px 6px 20px darkslategray;
+    text-align: center;
+    text-shadow: 6px 6px 6px gray;
+    font-size: 25px;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 70px;
+    font-family: 'Times New Roman', Times, serif;
+    width: 40%;
+    color: whitesmoke;
+    text-transform: capitalize;
+    height: 40%;
+}
+
+.content div{
+    margin: 20px;
+}
+
+.cancel-btn{
+    background-color: rgb(116, 32, 32);
+    font-size: 28px;
+    box-shadow: 6px 6px 20px darkslategray;
+    text-shadow: 6px 6px 20px darkslategray;
+    height: 20%;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    font-style: italic;
+    width: 50%;
+}

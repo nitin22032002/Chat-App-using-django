@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Dashboard</title>
+    <link href="/static/css/homePage.css" rel="stylesheet" >
+</head>
+<body>
+    <div class="main-body">
+        {%include "header.html"%}
+        <div class="chatting-button">
+            <button class="btn" onclick="location.href='/joinmeeting'">
+                Join Room
+            </button>
+            <button class="btn" onclick="location.href='/createmeeting'">
+                Create Room
+            </button>
+            <button class="btn" onclick="location.href='/meetinglist'">
+                MyRoom's
+            </button>
+            <button class="btn" onclick="location.href='/logout'">
+                Logout
+            </button>
+        </div>
+        {%include "footer.html"%}
+    </div>
+</body>
+</html>

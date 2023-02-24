@@ -1,0 +1,28 @@
+.main-body{
+    width: 95%;
+    margin-left: 40px;
+    box-shadow: 6px 6px 6px gray;
+    border-radius: 10px;
+    cursor: default;
+}
+
+.heading{
+    box-shadow: 6px 6px 6px gray;
+    font-size: 35px;
+    font-style: italic;
+    font-weight: 600;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    text-align: center;
+    text-shadow: 6px 6px 6px gray;
+    margin: 6px;
+    background-color: rgb(130, 130, 206,0.7);
+    padding: 5px;
+}
+
+.mytable{
+    font-size: 20px;
+    font-style: italic;
+    text-align: center;
+    text-shadow: 6px 6px 6px gray;
+    
+}

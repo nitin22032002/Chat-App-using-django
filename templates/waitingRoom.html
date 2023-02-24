@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Group Chat-Waiting Room</title>
+    <link href="/static/css/waiting.css" rel="stylesheet">
+</head>
+<body >
+<div class="main-body">
+    <div class="content">
+        <div>
+            Wait Until Host Not Take You In
+        </div>
+        <div>
+            Topic : {{mname}}
+        </div>
+        <div>
+            Meeting Id : {{mid}}
+        </div>
+        <div >
+            Request Expire After : <span id="timmer"></span> 
+        </div>
+        <div>
+            <button class="cancel-btn" onclick="location.href='/cancel'">Cancel Request</button>
+        </div>
+    </div>
+</div>
+</body>
+{{ mid|json_script:"mid" }}
+{{ id|json_script:"id" }}
+{{ status|json_script:"status" }}
+<script src="/static/js/waiting.js">
+   
+</script>
+</html>

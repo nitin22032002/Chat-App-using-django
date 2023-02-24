@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Group Chat-Create Meeting</title>
+    <link rel="stylesheet" href={% static "/css/style.css" %}>
+  </head>
+  <body>
+<div class="card"  >
+      <div class="shine"></div>
+      <h1>Update Meeting</h1>
+      <br />
+         <form action="/update/updatemeeting" method="post" >
+            {% csrf_token %}
+            <div class="single-line">
+                <p class="legend-heading" for="name">Meeting Id</p>
+                
+                <input type="text" hidden name="meetingid"  value="{{data.id}}" />
+                <input type="text" disabled   value="{{data.id}}" />
+              </div>
+      <div class="single-line">
+        <p class="legend-heading" for="name">Topic</p>
+        <input type="text" name="name" id="name" value="{{data.name}}" />
+      </div>
+      <div class="single-line">
+        <p class="legend-heading" for="emailId">Meeting Start</p>
+        <input type="datetime" name="start" id="emailId" value="{{data.date_start}}" />
+      </div>
+
+      <div class="single-line">
+        <p class="legend-heading" for="username">Meeting End</p>
+        <input type="datetime" name="end" id="username" value="{{data.date_end}}" />
+      </div>
+
+      
+
+      <input type="submit" value="Update Meeting" style="cursor: pointer;"  class="submit" />
+         </form>
+    </div>
+</body>
+</html>
